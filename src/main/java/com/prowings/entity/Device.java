@@ -16,17 +16,17 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class Product {
+public class Device {
 
-	@Schema(name = "Product ID", example = "1", required = true)
+	@Schema(name = "Device ID", example = "2", required = true)
 	@Id
     private Integer id;
 
-	@Schema(name = "Product name", example = "IPhone 15", required = false)
+	@Schema(name = "Device name", example = "Epson Printer", required = false)
 	@Column
     private String name;
 	
-	@Schema(name = "Product price", example = "150000", required = true)
+	@Schema(name = "Device price", example = "12000", required = true)
 
 	@Column
     private float price;

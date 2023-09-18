@@ -76,4 +76,9 @@ public class ProductServiceImpl implements ProductService{
         return new ArrayList<>();
 	}
 
+	@Override
+	public List<Product> getProductByNameAndPrice(String name, float price) {
+		return productRepository.findByNameAndPrice(name, price);
+	}
+
 }

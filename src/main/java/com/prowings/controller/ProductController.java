@@ -16,10 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prowings.entity.Product;
 import com.prowings.service.ProductService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import static com.prowings.util.Constants.*;
 
 import lombok.extern.log4j.Log4j2;
 
+@Tag(name = "Product", description = "Product management/CRUD APIs")
 @Log4j2
 @RestController
 @RequestMapping("/api/v1")
@@ -28,6 +37,15 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 	
+	@Operation(
+			summary = "Retrive all Products",
+			method = "getProducts",
+			description = "Gets the list of all Products!!"
+			)
+	  @ApiResponses({
+		    @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(implementation = Product.class), mediaType = "application/json") }),
+		    @ApiResponse(responseCode = "404", description = "Error while fetching the Products.", content = { @Content(schema = @Schema()) })
+		  })
 	@GetMapping("/products")
 	public ResponseEntity<List<Product>> getProducts()
 	{
@@ -35,6 +53,7 @@ public class ProductController {
 		List<Product> prodList = productService.getAllProducts();
 		return new ResponseEntity<List<Product>>(prodList, HttpStatus.OK);
 	}
+
 
 	@GetMapping("/products/{id}")
 	public ResponseEntity<Product> getProductById(@PathVariable int id)
@@ -51,6 +70,15 @@ public class ProductController {
 		List<Product> prodList = productService.getProductByName(name);
 		return new ResponseEntity<List<Product>>(prodList, HttpStatus.OK);
 
+	}
+
+	@GetMapping("/products/name_price")
+	public ResponseEntity<List<Product>> getProductByNameAndPrice(@RequestParam String name, float price)
+	{
+		log.info("Request received to fetch Products by name and price");
+		List<Product> prodList = productService.getProductByNameAndPrice(name, price);
+		return new ResponseEntity<List<Product>>(prodList, HttpStatus.OK);
+		
 	}
 	
 	@PostMapping("/products")
@@ -70,15 +98,15 @@ public class ProductController {
 		return new ResponseEntity<List<Product>>(prodList, HttpStatus.OK);
 	}
 
-	@GetMapping("/products/sort") 
-	public ResponseEntity<List<Product>> getAllProductsSortedWithPagination(@RequestParam String sortBy, 
-			@RequestParam String sortDir,
-			@RequestParam int pageSize,
-			@RequestParam int pageNo )
-	{
-		log.info("Request received to fetch all Products with sorting and Pagination techniq");
-		List<Product> prodList = productService.getAllProductsSortedAndPaginated(pageSize, pageNo, sortBy,sortDir);
-		return new ResponseEntity<List<Product>>(prodList, HttpStatus.OK);
-	}
+//	@GetMapping("/products/sort") 
+//	public ResponseEntity<List<Product>> getAllProductsSortedWithPagination(@RequestParam String sortBy, 
+//			@RequestParam String sortDir,
+//			@RequestParam int pageSize,
+//			@RequestParam int pageNo )
+//	{
+//		log.info("Request received to fetch all Products with sorting and Pagination techniq");
+//		List<Product> prodList = productService.getAllProductsSortedAndPaginated(pageSize, pageNo, sortBy,sortDir);
+//		return new ResponseEntity<List<Product>>(prodList, HttpStatus.OK);
+//	}
 
 }

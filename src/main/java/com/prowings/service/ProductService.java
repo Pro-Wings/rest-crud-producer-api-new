@@ -18,5 +18,7 @@ public interface ProductService {
 
 	public List<Product> getAllProductsSortedAndPaginated(int pageSize, int pageNo, String sortBy, String sortDir);
 
+	public List<Product> getProductByNameAndPrice(String name, float price);
+
 
 }

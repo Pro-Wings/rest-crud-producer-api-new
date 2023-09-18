@@ -13,6 +13,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 //	public boolean createProduct(Product product);
 	
 	public List<Product> findByName(String name);
+
+	public List<Product> findByNameAndPrice(String name, float price);
 	
 	
 	
